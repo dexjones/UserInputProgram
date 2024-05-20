@@ -9,16 +9,19 @@ Author: Dexter Jones
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <mutex>
+#include <thread>
 
 using namespace std;
+mutex mtx; // Added concurrency vulnerability mitigation
 
 void reverseFile(fstream &myFile) {
 	streampos begin, end;
 	int* length = new int; // pointer
 	
 	if (myFile.is_open()) {
-		myFile.seekg(0, ios::end); 
-		end = myFile.tellg();
+		myFile.seekg(0, ios::end); //read file to end
+		end = myFile.tellg(); //character size of file
 		
 		*length = end; //pointer length assigned value of end
 		
@@ -31,7 +34,7 @@ void reverseFile(fstream &myFile) {
 			swap(buffer[i], buffer[*length - i - 1]);
 		}
 
-		myFile.seekp(0, ios::beg);
+		myFile.seekp(0, ios::beg); //put pointer at beginning of file
 
 		ofstream myRevFile;
 		myRevFile.open("CSC450-mod5-reverse.txt", ios::out | ios::binary);
@@ -58,9 +61,10 @@ int main() {
 	ofstream outFile;
 	outFile.open("CSC450_CT5_mod5.txt", ios_base::app);
 
-	cout << "Please enter your city and state: ";
+	cout << "Please enter your city and anything else you would like to share: ";
 	getline(cin, s); // get user input
 
+	mtx.lock(); 
 	if (outFile.is_open()) {
 		outFile << endl <<s; // Add user input to file
 		outFile.close(); 
@@ -68,11 +72,14 @@ int main() {
 	else {
 		cout << "Unable to open file";
 	}
-	
+	mtx.unlock();
+
+	mtx.lock();
 	fstream myFile("CSC450_CT5_mod5.txt", ios::in | ios::out | ios::binary);
 
 	reverseFile(myFile); // calls function to reverse characters in file
 	myFile.close();
-	
+	mtx.unlock();
+
 	return 0;
 }

@@ -23,5 +23,8 @@
     <Text Include="CSC450_CT5_mod5.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="CSC450-mod5-reverse.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

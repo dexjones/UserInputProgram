@@ -142,6 +142,7 @@
     <ClCompile Include="Input.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="CSC450-mod5-reverse.txt" />
     <Text Include="CSC450_CT5_mod5.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
